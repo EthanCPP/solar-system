@@ -7,6 +7,34 @@
     <title>Solar System</title>
   </head>
   <body>
+    <div class="gui">
+      <button id="toggle">Toggle options</button>
+
+      <div class="options">
+        <div class="option">
+          <p>Speed</p>
+          <button class="set-speed" data-speed="0">0</button>
+          <button class="set-speed" data-speed="25">25%</button>
+          <button class="set-speed active" data-speed="100">100%</button>
+          <button class="set-speed" data-speed="200">200%</button>
+          <button class="set-speed" data-speed="500">500%</button>
+        </div>
+
+        <div class="option">
+          <p>Follow object</p>
+          <button class="go-to" data-object="sun">Sun</button>
+          <button class="go-to" data-object="0">Mercury</button>
+          <button class="go-to" data-object="1">Venus</button>
+          <button class="go-to" data-object="2">Earth</button>
+          <button class="go-to" data-object="3">Mars</button>
+          <button class="go-to" data-object="4">Jupiter</button>
+          <button class="go-to" data-object="5">Saturn</button>
+          <button class="go-to" data-object="6">Uranus</button>
+          <button class="go-to" data-object="7">Neptune</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

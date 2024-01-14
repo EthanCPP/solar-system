@@ -14,6 +14,7 @@ export class Planet {
             material = new THREE.MeshPhongMaterial({color: 0xFCB82F});
         }
 
+        this.planetSize = planetSize;
         this.orbitalRadius = orbitalRadius;
         this.orbitalPeriod = orbitalPeriod;
         this.orbitalInclination = orbitalInclination * 2;

@@ -1,3 +1,47 @@
 body {
   margin: 0;
 }
+
+.gui {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  top: 20px;
+  left: 20px;
+  width: 350px;
+}
+
+#toggle {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.options {
+  display: none;
+  padding: 20px;
+}
+
+.option {
+  margin-bottom: 20px;
+}
+
+.option p {
+  color: white;
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+.option button {
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.option button.active {
+  background-color: black;
+  color: white;
+}
+
+.options.show {
+  display: block;
+}

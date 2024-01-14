@@ -10,7 +10,7 @@ export class Sun {
         this.mesh = new THREE.Mesh(geometry, material);
         scene.add(this.mesh);
 
-        this.light = new THREE.PointLight(0xFFFFFF, 500000, 10000000);
+        this.light = new THREE.PointLight(0xFFFFFF, 50000, 10000000);
         this.light.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
         scene.add(this.light);
     }
