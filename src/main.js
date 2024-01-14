@@ -33,6 +33,10 @@ planets.push(new Planet(scene, 25, 1000, './assets/saturn-texture.webp', Math.ra
 planets.push(new Planet(scene, 10.5, 1300, './assets/uranus-texture.webp', Math.random()*360, 0.8));
 planets.push(new Planet(scene, 10.1, 1600, './assets/neptune-texture.webp', Math.random()*360, 17.2));
 
+planets[2].addMoon("assets/moon-texture.webp",20,1.7,10);
+planets[3].addMoon("assets/mars-moon-P.png",15,1,-1);//phobos
+planets[3].addMoon("assets/mars-moon-D.png",25,0.7,3); //deimos
+
 const clock = new Clock();
 
 var speedFactor = 5000;

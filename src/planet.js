@@ -24,9 +24,13 @@ export class Planet {
         this.mesh.position.x = this.orbitalRadius;
         scene.add(this.mesh);
 
+        this.moons = [];
+
         this.light = new THREE.PointLight(0xFFFFFF, 13, 100);
         this.light.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
         scene.add(this.light);
+
+        this.scene = scene;
     }
 
     update(dt, speedFactor) {
@@ -42,5 +46,37 @@ export class Planet {
         this.mesh.position.x = (Math.sin(this.orbitalPeriod * Math.PI/180) * this.orbitalRadius);
         this.mesh.position.z = (Math.cos(this.orbitalPeriod * Math.PI/180) * this.orbitalRadius);
         this.mesh.position.y = (Math.sin(this.orbitalPeriod * Math.PI/180) * this.orbitalInclination);
+
+        this.moons.forEach((moon)=> {
+            moon.mesh.position.x = (Math.sin(moon.orbitalPeriod * Math.PI/180) * moon.distance) + this.mesh.position.x;
+            moon.mesh.position.z = (Math.cos(moon.orbitalPeriod * Math.PI/180) * moon.distance) + this.mesh.position.z;
+            moon.mesh.position.y = (Math.sin(moon.orbitalPeriod * Math.PI/180) * moon.inclination) + this.mesh.position.y;
+
+            moon.orbitalPeriod += (1 / moon.distance) * dt * speedFactor;
+
+            if (moon.orbitalPeriod >= 360) {
+                moon.orbitalPeriod = 0;
+            }
+        })
+    }
+
+    addMoon(texturePath, distance, moonSize, inclination = 0){
+        const geometry = new THREE.SphereGeometry(moonSize);
+        const texture = new THREE.TextureLoader().load(texturePath);
+        const material = new THREE.MeshPhongMaterial({map: texture});
+        const mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.x = this.mesh.position.x;
+        mesh.position.z = this.mesh.position.z;
+        mesh.position.y = this.mesh.position.y;
+
+        this.moons.push({
+            mesh,
+            distance,
+            orbitalPeriod: 0,
+            inclination
+        });
+
+        this.scene.add(mesh)
     }
 }
