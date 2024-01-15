@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from "three/addons";
+import {EffectComposer, OrbitControls, OutputPass, RenderPass, UnrealBloomPass} from "three/addons";
 
 import { Sun } from './sun.js';
 import { Planet } from './planet.js';
@@ -10,13 +10,16 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000);
 camera.position.z = 500;
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.toneMappingExposure = 1;
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const ambientLight = new THREE.AmbientLight(0xbbbbbb);
+const ambientLight = new THREE.AmbientLight(0x444444);
 scene.add(ambientLight);
 
 const skybox = new Skybox(scene);
@@ -42,6 +45,20 @@ const clock = new Clock();
 var speedFactor = 5000;
 var target = sun;
 
+// post processing
+const renderScene = new RenderPass(scene, camera);
+
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.3, .1, 0.2);
+
+const outputPass = new OutputPass();
+
+const composer = new EffectComposer(renderer);
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+composer.addPass(outputPass);
+var vec3 = new THREE.Vector3();
+
 function gameLoop() {
     requestAnimationFrame(gameLoop);
 
@@ -53,7 +70,8 @@ function gameLoop() {
 gameLoop();
 
 function update(dt) {
-    controls.update();
+
+    vec3.subVectors(camera.position, target.mesh.position);
 
     sun.update(dt);
 
@@ -61,11 +79,16 @@ function update(dt) {
         planet.update(dt, speedFactor);
     });
 
+    // controls.target.copy(target.mesh.position);
+    controls.object.position.copy(target.mesh.position).add(vec3);//.add(new THREE.Vector3(0, 50, 0));
+
     controls.target.copy(target.mesh.position);
+    controls.update();
 }
 
 function draw() {
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
+    composer.render();
 }
 
 // GUI
@@ -96,5 +119,9 @@ guiGoTos.forEach((guiGoTo) => {
         } else {
             target = planets[guiGoTo.dataset.object];
         }
+
+        camera.position.x = target.mesh.position.x;
+        camera.position.y = target.mesh.position.y;
+        camera.position.z = target.mesh.position.z + 100;
     });
 })

@@ -26,10 +26,6 @@ export class Planet {
 
         this.moons = [];
 
-        this.light = new THREE.PointLight(0xFFFFFF, 13, 100);
-        this.light.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
-        scene.add(this.light);
-
         this.scene = scene;
     }
 
